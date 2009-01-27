@@ -5,7 +5,7 @@
 					to add custom vendor-specific functionality. It also shows how to set up a simple
 					interface from user space code using I/O Registry properties.
                 
-	Copyright:		© Copyright 2002-2006 Apple Computer, Inc. All rights reserved.
+	Copyright:		ï¿½ Copyright 2002-2006 Apple Computer, Inc. All rights reserved.
 	
 	Disclaimer:		IMPORTANT:  This Apple software is supplied to you by Apple Computer, Inc.
 					("Apple") in consideration of your agreement to the following terms, and your
@@ -51,7 +51,7 @@
         
 */
 
-#include "VendorSpecificType00.h"
+#include "SEAforth24.h"
 #include <IOKit/storage/IOBlockStorageDriver.h>
 
 #ifdef DEBUG

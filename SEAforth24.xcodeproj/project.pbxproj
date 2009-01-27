@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -22,9 +22,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4CBE487C0F2FA78600B2E7C0 /* SEAforth24.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CBE487A0F2FA78600B2E7C0 /* SEAforth24.cpp */; };
 		8DD76F790486A8DE00D96B5E /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AB6884FE841BABC02AAC07 /* CoreFoundation.framework */; };
 		BBABE5550AA754CC00932BA5 /* SetPropertiesTestTool.c in Sources */ = {isa = PBXBuildFile; fileRef = BBABE5540AA754CC00932BA5 /* SetPropertiesTestTool.c */; };
-		BBEFDF130AA7558F00124652 /* VendorSpecificType00.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEFDF110AA7558F00124652 /* VendorSpecificType00.cpp */; };
 		BBEFDF170AA755A500124652 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBEFDF160AA755A500124652 /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -41,7 +41,7 @@
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = BBABE55E0AA754FE00932BA5;
-			remoteInfo = VendorSpecificType00;
+			remoteInfo = SEAforth24;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -59,12 +59,13 @@
 
 /* Begin PBXFileReference section */
 		09AB6884FE841BABC02AAC07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
-		8DD76F7E0486A8DE00D96B5E /* SetPropertiesTestTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SetPropertiesTestTool; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C13CD9A0F2FAA4D003955AE /* SetPropertiesTestTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SetPropertiesTestTool; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CBE48790F2FA78600B2E7C0 /* SEAforth24.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAforth24.h; sourceTree = "<group>"; };
+		4CBE487A0F2FA78600B2E7C0 /* SEAforth24.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SEAforth24.cpp; sourceTree = "<group>"; };
+		4CBE487B0F2FA78600B2E7C0 /* SEAforth24-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SEAforth24-Info.plist"; sourceTree = "<group>"; };
+		4CBE487E0F2FA79400B2E7C0 /* SetPropertiesTestTool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SetPropertiesTestTool.c; sourceTree = "<group>"; };
 		BBABE5540AA754CC00932BA5 /* SetPropertiesTestTool.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = SetPropertiesTestTool.c; sourceTree = "<group>"; };
-		BBABE55F0AA754FE00932BA5 /* VendorSpecificType00.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VendorSpecificType00.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		BBABE5600AA754FE00932BA5 /* VendorSpecificType00-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "VendorSpecificType00-Info.plist"; sourceTree = "<group>"; };
-		BBEFDF110AA7558F00124652 /* VendorSpecificType00.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VendorSpecificType00.cpp; sourceTree = "<group>"; };
-		BBEFDF120AA7558F00124652 /* VendorSpecificType00.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VendorSpecificType00.h; sourceTree = "<group>"; };
+		BBABE55F0AA754FE00932BA5 /* SEAforth24.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SEAforth24.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEFDF160AA755A500124652 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
 		BBEFDF1A0AA755B700124652 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
@@ -89,7 +90,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		08FB7794FE84155DC02AAC07 /* VendorSpecificType00 */ = {
+		08FB7794FE84155DC02AAC07 /* SEAforth24 */ = {
 			isa = PBXGroup;
 			children = (
 				BBABE55A0AA754DF00932BA5 /* Kernel Source */,
@@ -97,7 +98,7 @@
 				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
 				19C28FBDFE9D53C911CA2CBB /* Products */,
 			);
-			name = VendorSpecificType00;
+			name = SEAforth24;
 			sourceTree = "<group>";
 		};
 		08FB7795FE84155DC02AAC07 /* User Space Source */ = {
@@ -121,8 +122,8 @@
 		19C28FBDFE9D53C911CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BBABE55F0AA754FE00932BA5 /* VendorSpecificType00.kext */,
-				8DD76F7E0486A8DE00D96B5E /* SetPropertiesTestTool */,
+				BBABE55F0AA754FE00932BA5 /* SEAforth24.kext */,
+				4C13CD9A0F2FAA4D003955AE /* SetPropertiesTestTool */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,9 +131,10 @@
 		BBABE55A0AA754DF00932BA5 /* Kernel Source */ = {
 			isa = PBXGroup;
 			children = (
-				BBEFDF110AA7558F00124652 /* VendorSpecificType00.cpp */,
-				BBEFDF120AA7558F00124652 /* VendorSpecificType00.h */,
-				BBABE5600AA754FE00932BA5 /* VendorSpecificType00-Info.plist */,
+				4CBE487E0F2FA79400B2E7C0 /* SetPropertiesTestTool.c */,
+				4CBE48790F2FA78600B2E7C0 /* SEAforth24.h */,
+				4CBE487A0F2FA78600B2E7C0 /* SEAforth24.cpp */,
+				4CBE487B0F2FA78600B2E7C0 /* SEAforth24-Info.plist */,
 			);
 			name = "Kernel Source";
 			sourceTree = "<group>";
@@ -154,13 +156,13 @@
 			);
 			name = SetPropertiesTestTool;
 			productInstallPath = "$(HOME)/bin";
-			productName = VendorSpecificType00;
-			productReference = 8DD76F7E0486A8DE00D96B5E /* SetPropertiesTestTool */;
+			productName = SEAforth24;
+			productReference = 4C13CD9A0F2FAA4D003955AE /* SetPropertiesTestTool */;
 			productType = "com.apple.product-type.tool";
 		};
-		BBABE55E0AA754FE00932BA5 /* VendorSpecificType00 */ = {
+		BBABE55E0AA754FE00932BA5 /* SEAforth24 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BBABE5610AA754FE00932BA5 /* Build configuration list for PBXNativeTarget "VendorSpecificType00" */;
+			buildConfigurationList = BBABE5610AA754FE00932BA5 /* Build configuration list for PBXNativeTarget "SEAforth24" */;
 			buildPhases = (
 				BBABE55B0AA754FE00932BA5 /* Sources */,
 				BBABE55C0AA754FE00932BA5 /* Resources */,
@@ -170,9 +172,9 @@
 			);
 			dependencies = (
 			);
-			name = VendorSpecificType00;
-			productName = VendorSpecificType00;
-			productReference = BBABE55F0AA754FE00932BA5 /* VendorSpecificType00.kext */;
+			name = SEAforth24;
+			productName = SEAforth24;
+			productReference = BBABE55F0AA754FE00932BA5 /* SEAforth24.kext */;
 			productType = "com.apple.product-type.kernel-extension.iokit";
 		};
 /* End PBXNativeTarget section */
@@ -180,13 +182,15 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 1DEB924B08733DCA0010E9CD /* Build configuration list for PBXProject "VendorSpecificType00" */;
+			buildConfigurationList = 1DEB924B08733DCA0010E9CD /* Build configuration list for PBXProject "SEAforth24" */;
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
-			mainGroup = 08FB7794FE84155DC02AAC07 /* VendorSpecificType00 */;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* SEAforth24 */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				BBABE5640AA7551A00932BA5 /* Build All */,
-				BBABE55E0AA754FE00932BA5 /* VendorSpecificType00 */,
+				BBABE55E0AA754FE00932BA5 /* SEAforth24 */,
 				8DD76F740486A8DE00D96B5E /* SetPropertiesTestTool */,
 			);
 		};
@@ -215,7 +219,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBEFDF130AA7558F00124652 /* VendorSpecificType00.cpp in Sources */,
+				4CBE487C0F2FA78600B2E7C0 /* SEAforth24.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,7 +233,7 @@
 		};
 		BBABE5680AA7552100932BA5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BBABE55E0AA754FE00932BA5 /* VendorSpecificType00 */;
+			target = BBABE55E0AA754FE00932BA5 /* SEAforth24 */;
 			targetProxy = BBABE5670AA7552100932BA5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -248,7 +252,7 @@
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.2;
 				PRODUCT_NAME = SetPropertiesTestTool;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = macosx10.4;
 				SDKROOT_i386 = /Developer/SDKs/MacOSX10.4u.sdk;
 				SDKROOT_ppc = /Developer/SDKs/MacOSX10.2.8.sdk;
 			};
@@ -272,26 +276,24 @@
 		1DEB924C08733DCA0010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = i386;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+				VALID_ARCHS = i386;
 			};
 			name = Debug;
 		};
 		1DEB924D08733DCA0010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = i386;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+				VALID_ARCHS = i386;
 			};
 			name = Release;
 		};
@@ -306,15 +308,15 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_VERSION_i386 = 4.0;
 				GCC_VERSION_ppc = 3.3;
-				INFOPLIST_FILE = "VendorSpecificType00-Info.plist";
+				INFOPLIST_FILE = "SEAforth24-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "$(GCC_PREPROCESSOR_DEFINITIONS)";
 				INSTALL_PATH = "$(SYSTEM_LIBRARY_DIR)/Extensions";
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.2;
-				MODULE_NAME = com.apple.dts.driver.VendorSpecificType00;
+				MODULE_NAME = com.wagerlabs.driver.SEAforth24;
 				MODULE_VERSION = 1.1;
-				PRODUCT_NAME = VendorSpecificType00;
+				PRODUCT_NAME = SEAforth24;
 				SDKROOT_i386 = /Developer/SDKs/MacOSX10.4u.sdk;
 				SDKROOT_ppc = /Developer/SDKs/MacOSX10.2.8.sdk;
 				WRAPPER_EXTENSION = kext;
@@ -329,15 +331,15 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_VERSION_i386 = 4.0;
 				GCC_VERSION_ppc = 3.3;
-				INFOPLIST_FILE = "VendorSpecificType00-Info.plist";
+				INFOPLIST_FILE = "SEAforth24-Info.plist";
 				INFOPLIST_PREPROCESS = YES;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "$(GCC_PREPROCESSOR_DEFINITIONS)";
 				INSTALL_PATH = "$(SYSTEM_LIBRARY_DIR)/Extensions";
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.2;
-				MODULE_NAME = com.apple.dts.driver.VendorSpecificType00;
+				MODULE_NAME = com.wagerlabs.driver.SEAforth24;
 				MODULE_VERSION = 1.1;
-				PRODUCT_NAME = VendorSpecificType00;
+				PRODUCT_NAME = SEAforth24;
 				SDKROOT_i386 = /Developer/SDKs/MacOSX10.4u.sdk;
 				SDKROOT_ppc = /Developer/SDKs/MacOSX10.2.8.sdk;
 				WRAPPER_EXTENSION = kext;
@@ -378,7 +380,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB924B08733DCA0010E9CD /* Build configuration list for PBXProject "VendorSpecificType00" */ = {
+		1DEB924B08733DCA0010E9CD /* Build configuration list for PBXProject "SEAforth24" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB924C08733DCA0010E9CD /* Debug */,
@@ -387,7 +389,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BBABE5610AA754FE00932BA5 /* Build configuration list for PBXNativeTarget "VendorSpecificType00" */ = {
+		BBABE5610AA754FE00932BA5 /* Build configuration list for PBXNativeTarget "SEAforth24" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BBABE5620AA754FE00932BA5 /* Debug */,

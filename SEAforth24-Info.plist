@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.apple.dts.driver.VendorSpecificType00</string>
+	<string>com.wagerlabs.driver.SEAforth24</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -22,12 +22,12 @@
 	<string>1.1</string>
 	<key>IOKitPersonalities</key>
 	<dict>
-		<key>VendorSpecificType00</key>
+		<key>SEAforth24</key>
 		<dict>
 			<key>CFBundleIdentifier</key>
-			<string>com.apple.dts.driver.VendorSpecificType00</string>
+			<string>com.wagerlabs.driver.SEAforth24</string>
 			<key>IOClass</key>
-			<string>com_apple_dts_driver_VendorSpecificType00</string>
+			<string>com_wagerlabs_driver_SEAforth24</string>
 			<key>IOProviderClass</key>
 			<string>IOSCSIPeripheralDeviceNub</string>
 #if DEBUG
@@ -37,9 +37,9 @@
 			<key>Peripheral Device Type</key>
 			<integer>0</integer>
 			<key>Product Identification</key>
-			<string>Put your Product Identification here</string>
+			<string>Evaluation Board</string>
 			<key>Vendor Identification</key>
-			<string>Put your Vendor Identification here</string>
+			<string>SEAforth</string>
 		</dict>
 	</dict>
 	<key>OSBundleLibraries</key>
