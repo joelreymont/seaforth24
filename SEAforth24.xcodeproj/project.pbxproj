@@ -64,6 +64,8 @@
 		4CBE487A0F2FA78600B2E7C0 /* SEAforth24.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SEAforth24.cpp; sourceTree = "<group>"; };
 		4CBE487B0F2FA78600B2E7C0 /* SEAforth24-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SEAforth24-Info.plist"; sourceTree = "<group>"; };
 		4CBE487E0F2FA79400B2E7C0 /* SetPropertiesTestTool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SetPropertiesTestTool.c; sourceTree = "<group>"; };
+		4CFC03AD0F3109FD00A3A74C /* UserKernelShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserKernelShared.h; sourceTree = "<group>"; };
+		4CFC03C10F310E8D00A3A74C /* SEAforth24UserClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAforth24UserClient.h; sourceTree = "<group>"; };
 		BBABE5540AA754CC00932BA5 /* SetPropertiesTestTool.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = SetPropertiesTestTool.c; sourceTree = "<group>"; };
 		BBABE55F0AA754FE00932BA5 /* SEAforth24.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SEAforth24.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBEFDF160AA755A500124652 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
@@ -131,6 +133,8 @@
 		BBABE55A0AA754DF00932BA5 /* Kernel Source */ = {
 			isa = PBXGroup;
 			children = (
+				4CFC03C10F310E8D00A3A74C /* SEAforth24UserClient.h */,
+				4CFC03AD0F3109FD00A3A74C /* UserKernelShared.h */,
 				4CBE487E0F2FA79400B2E7C0 /* SetPropertiesTestTool.c */,
 				4CBE48790F2FA78600B2E7C0 /* SEAforth24.h */,
 				4CBE487A0F2FA78600B2E7C0 /* SEAforth24.cpp */,
@@ -249,11 +253,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION_i386 = 4.0;
 				GCC_VERSION_ppc = 3.3;
-				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
+				MACOSX_DEPLOYMENT_TARGET_i386 = 10.5;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.2;
 				PRODUCT_NAME = SetPropertiesTestTool;
 				SDKROOT = macosx10.4;
-				SDKROOT_i386 = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT_i386 = /Developer/SDKs/MacOSX10.5.sdk;
 				SDKROOT_ppc = /Developer/SDKs/MacOSX10.2.8.sdk;
 			};
 			name = Debug;
@@ -277,6 +281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
+				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
@@ -289,6 +294,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
+				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
