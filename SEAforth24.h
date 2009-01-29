@@ -1,14 +1,21 @@
-#include <IOKit/scsi-commands/IOSCSIPeripheralDeviceType00.h>
-#include <IOKit/scsi-commands/IOBlockStorageServices.h>
+#include <IOKit/scsi/IOSCSIPeripheralDeviceType00.h>
+#include <IOKit/scsi/IOBlockStorageServices.h>
+#include "UserKernelShared.h"
 
 class com_wagerlabs_driver_SEAforth24 : public IOSCSIPeripheralDeviceType00
 {
 	OSDeclareDefaultStructors(com_wagerlabs_driver_SEAforth24)
 
+public:
+
+    IOReturn S24Read(IOMemoryDescriptor *buffer);
+    IOReturn S24Write(IOMemoryDescriptor *buffer);
+
 protected:
     
-    bool InitializeDeviceSupport ( void );
+    bool InitializeDeviceSupport (void);
     IOReturn S24Init(void);
+    IOReturn S24SyncIO(UInt8 direction, IOMemoryDescriptor *buffer);
     
     // Reserve space for future expansion.
     struct ExpansionData { };

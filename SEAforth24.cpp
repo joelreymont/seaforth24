@@ -1,5 +1,6 @@
-#include "SEAforth24.h"
+#include <AssertMacros.h>
 #include <IOKit/storage/IOBlockStorageDriver.h>
+#include "SEAforth24.h"
 
 #ifdef DEBUG
 #define DEBUG_LOG IOLog
@@ -22,35 +23,84 @@ bool com_wagerlabs_driver_SEAforth24::InitializeDeviceSupport( void )
     return result;
 }
 
+IOReturn com_wagerlabs_driver_SEAforth24::S24Read(IOMemoryDescriptor *buffer)
+{
+    return S24SyncIO(kSCSIDataTransfer_FromTargetToInitiator, buffer);
+}
+
+IOReturn com_wagerlabs_driver_SEAforth24::S24Write(IOMemoryDescriptor *buffer)
+{
+    return S24SyncIO(kSCSIDataTransfer_FromInitiatorToTarget, buffer);
+}
+
 IOReturn com_wagerlabs_driver_SEAforth24::S24Init(void)
 {
-    IOReturn err;
+    return S24SyncIO(kSCSIDataTransfer_NoDataTransfer, NULL);
+}
+ 
+IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDescriptor *buffer)
+{
+    IOReturn err = kIOReturnBadArgument;
+    UInt8 b1, b2;
+    UInt64 count = 0;
+    SCSITaskIdentifier req = NULL;
+    SCSITaskStatus taskStatus = kSCSITaskStatus_No_Status;
+    SCSIServiceResponse serviceResponse = kSCSIServiceResponse_SERVICE_DELIVERY_OR_TARGET_FAILURE;
+    
+    if (direction != kSCSIDataTransfer_NoDataTransfer)
+    {
+        require(buffer != NULL, ErrorExit);
+    }
+    
+    req = GetSCSITask();
+    
+    require(req != NULL, ErrorExit);
 
-    SCSITaskIdentifier req = GetSCSITask();
-    SetCommandDescriptorBlock(req, 0x20, 0xFA, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+    switch (direction)
+    {
+        kSCSIDataTransfer_FromInitiatorToTarget:
+            b1 = 0xFB;
+            b2 = 0x00;
+            break;
+        kSCSIDataTransfer_FromTargetToInitiator:
+            b1 = 0xFB;
+            b2 = 0x01;
+            break;
+        default:
+            b1 = 0xFA;
+            b2 = 0x00;
+    }
+    SetCommandDescriptorBlock(req, 0x20, b1, b2, 0x00, 0x00, 0x00, 0x00, 0x00, /*0x90*/0x00, 0x00);
     SetTimeoutDuration(req, 10000);
-    SetDataTransferDirection(req, kSCSIDataTransfer_NoDataTransfer);
-	SCSIServiceResponse serviceResponse = SendCommand(req, 10000);
-
-    SCSITaskStatus taskStatus = GetTaskStatus( req );
+    SetDataTransferDirection(req, direction);
+    
+    if (direction != kSCSIDataTransfer_NoDataTransfer)
+    {
+        SetDataBuffer(req, buffer);
+	    SetRequestedDataTransferCount(req, buffer->getLength());
+	}
 	
-	DEBUG_LOG("%s[%p]::%s(): service response: %lu, task status: %lu\n", 
-	    getName(), this, __FUNCTION__, 
-	    (serviceResponse == kSCSIServiceResponse_TASK_COMPLETE), 
-	    (taskStatus == kSCSITaskStatus_GOOD));
+    serviceResponse = SendCommand(req, 10000);
+    taskStatus = GetTaskStatus(req);
+    count = GetRealizedDataTransferCount(req);
+    
+	DEBUG_LOG("%s[%p]::%s(): service response: %lu, task status: %lu, transfer count: %lu\n", 
+	    getName(), this, __FUNCTION__, serviceResponse, taskStatus, count);
 
 	if ((serviceResponse == kSCSIServiceResponse_TASK_COMPLETE) 
 	    && taskStatus == kSCSITaskStatus_GOOD)
 	    err = kIOReturnSuccess;
 	else
         err = kIOReturnError;
-	
+
 	ReleaseSCSITask(req);
     req = NULL;
 
-	return err;  
-}
+ErrorExit:
 
+	return err;      
+}
+ 
 // Padding for future binary compatibility.
 OSMetaClassDefineReservedUnused(com_wagerlabs_driver_SEAforth24, 0);
 OSMetaClassDefineReservedUnused(com_wagerlabs_driver_SEAforth24, 1);
