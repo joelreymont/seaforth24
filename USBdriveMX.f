@@ -35,15 +35,14 @@ DROP
 0 CONSTANT kIOMasterPortDefault
 0 CONSTANT KERN_SUCCESS
 
-\ CREATE DRIVER-CLASS-NAME ZSTR com_wagerlabs_driver_SEAforth24
-CREATE DRIVER-CLASS-NAME ZSTR IOSCSIPeripheralDeviceType00
+mach_task_self_ @ CONSTANT OUR-MACH-TASK
 
-CREATE BLOCK-STORAGE-SVC ZSTR IOBlockStorageServices 
+CREATE DRIVER-CLASS-NAME ZSTR com_wagerlabs_driver_SEAforth24
+
 \ Registry plane names
 CREATE kIOServicePlane ZSTR IOService
 
 VARIABLE ITERATOR
-VARIABLE DRIVER
 VARIABLE USER-CLIENT
 
 : RELEASE-OBJECT ( -- )
@@ -52,38 +51,26 @@ VARIABLE USER-CLIENT
 : RELEASE-ITERATOR ( -- )
    ITERATOR RELEASE-OBJECT ;
 
-: RELEASE-DRIVER ( -- )
-   DRIVER RELEASE-OBJECT ;
-   
-: LOOKUP-DRIVER ( -- )   
-   \ IOBlockStorageServices is our child in the I/O registry
-   BLOCK-STORAGE-SVC IOServiceMatching ( dictRef | 0 *)
+: LOOKUP-DRIVER ( -- svc )   
+   DRIVER-CLASS-NAME IOServiceMatching ( dictRef | 0 *)
    ?DUP 0= ABORT" IOServiceMatching did not return a dictionary"
-   \ create an iterator over all matching IOService nubs
-   \ and consume dictRef on success
+   \ consumes dictRef on success
    kIOMasterPortDefault OVER ITERATOR IOServiceGetMatchingServices
    ( dictRef kr *) ?DUP IF 
       CFRelease ABORT" IOServiceGetMatchingServices failed" 
    THEN DROP
-   \ Iterate over all instances of block storage services to find our driver
-   BEGIN
-      ITERATOR @ IOIteratorNext ( svc *)
-      ?DUP 0= ABORT" No block storage service found!"
-      ( svc *) DUP kIOServicePlane DRIVER IORegistryEntryGetParentEntry
-      ( svc kr *) SWAP IOOBjectRelease DROP
-      ABORT" IORegistryEntryGetParentEntry failed"
-      DRIVER @ DRIVER-CLASS-NAME IOOBjectConformsTo
-   UNTIL
+   ITERATOR @ IOIteratorNext ( svc *)
+   ?DUP 0= ABORT" No driver found!"
    RELEASE-ITERATOR ;
   
 \ This call will cause the user client to be instantiated. It returns 
 \ an io_connect_t handle that is used for all subsequent calls 
 \ to the user client.
 
-: OPEN-USER-CLIENT ( -- )
-   DRIVER-OBJECT @ mach_task_self_ 0 USER-CLIENT IOServiceOpen
-   ABORT" Could open user client"
-   ;
+: OPEN-USER-CLIENT ( svc -- handle )
+   OUR-MACH-TASK 0 USER-CLIENT IOServiceOpen
+   ABORT" Could not open user client" 
+   USER-CLIENT @ ;
    
 : CLOSE-USER-CLIENT ( -- )
    USER-CLIENT @ IOServiceClose
