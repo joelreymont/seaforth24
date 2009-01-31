@@ -11,7 +11,22 @@
 #define super IOSCSIPeripheralDeviceType00
 OSDefineMetaClassAndStructors(com_wagerlabs_driver_SEAforth24, IOSCSIPeripheralDeviceType00)
 
-bool com_wagerlabs_driver_SEAforth24::InitializeDeviceSupport( void )
+bool com_wagerlabs_driver_SEAforth24::start(IOService *provider)
+{
+  bool  result = false;
+  
+  require ( super::start ( provider ), ErrorExit );
+  result = true;
+ 
+  registerService();
+  
+ErrorExit:
+    
+  return result;
+  
+}
+
+bool com_wagerlabs_driver_SEAforth24::InitializeDeviceSupport(void)
 {
     bool result = false;
 
@@ -47,6 +62,8 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
     SCSITaskStatus taskStatus = kSCSITaskStatus_No_Status;
     SCSIServiceResponse serviceResponse = kSCSIServiceResponse_SERVICE_DELIVERY_OR_TARGET_FAILURE;
     
+    DEBUG_LOG("%s[%p]::%s(%d, %p)\n", getName(), this, __FUNCTION__, direction, buffer);
+
     if (direction != kSCSIDataTransfer_NoDataTransfer)
     {
         require(buffer != NULL, ErrorExit);
@@ -78,9 +95,12 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
     {
         SetDataBuffer(req, buffer);
 	    SetRequestedDataTransferCount(req, buffer->getLength());
-	}
+    }
 	
+    buffer->prepare();
     serviceResponse = SendCommand(req, 10000);
+    buffer->complete();
+  
     taskStatus = GetTaskStatus(req);
     count = GetRealizedDataTransferCount(req);
     

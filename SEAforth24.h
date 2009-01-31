@@ -13,6 +13,7 @@ public:
 
 protected:
     
+    bool start(IOService *provider);
     bool InitializeDeviceSupport (void);
     IOReturn S24Init(void);
     IOReturn S24SyncIO(UInt8 direction, IOMemoryDescriptor *buffer);
