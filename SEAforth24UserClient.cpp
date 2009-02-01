@@ -231,6 +231,8 @@ IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, IODirectio
 {
 	IOReturn result;
 
+	IOLog("%s[%p]::%s(%p, %d, %d)\n", getName(), this, __FUNCTION__, buffer, size, direction);
+
 	if (fProvider == NULL || isInactive()) 
 	{
 		// Return an error if we don't have a provider. This could happen if the user process
