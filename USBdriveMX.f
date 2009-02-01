@@ -13,7 +13,7 @@ FUNCTION: CFRelease ( ref -- )
 
 LIBRARY /System/Library/Frameworks/IOKit.framework/IOKit
 
-FUNCTION: IOServiceOpen ( svc task_port type handle-addr -- kr )
+FUNCTION: IOServiceOpen ( svc port type handle-addr -- kr )
 FUNCTION: IOServiceClose ( handle -- kr )
 FUNCTION: IOServiceMatching ( cstr -- dict )
 FUNCTION: IOServiceGetMatchingServices ( port dict iter-addr -- kr )
@@ -22,6 +22,7 @@ FUNCTION: IOIteratorNext ( iter -- obj )
 FUNCTION: IOObjectRelease ( iter -- kr )
 FUNCTION: IOObjectConformsTo ( obj cst -- bool )
 FUNCTION: IOObjectGetClass ( obj buf -- kr )
+FUNCTION: IOConnectCallScalarMethod ( port u addr u addr u -- kr )
 
 \ Dispatch selectors
 
@@ -33,23 +34,11 @@ FUNCTION: IOObjectGetClass ( obj buf -- kr )
 DROP
 
 0 CONSTANT kIOMasterPortDefault
-0 CONSTANT KERN_SUCCESS
-
 mach_task_self_ @ CONSTANT OUR-MACH-TASK
 
 CREATE DRIVER-CLASS-NAME ZSTR com_wagerlabs_driver_SEAforth24
 
-\ Registry plane names
-CREATE kIOServicePlane ZSTR IOService
-
 VARIABLE ITERATOR
-VARIABLE USER-CLIENT
-
-: RELEASE-OBJECT ( -- )
-   DUP @ IOObjectRelease DROP 0 SWAP ! ;
-   
-: RELEASE-ITERATOR ( -- )
-   ITERATOR RELEASE-OBJECT ;
 
 : LOOKUP-DRIVER ( -- svc )   
    DRIVER-CLASS-NAME IOServiceMatching ( dictRef | 0 *)
@@ -59,23 +48,47 @@ VARIABLE USER-CLIENT
    ( dictRef kr *) ?DUP IF 
       CFRelease ABORT" IOServiceGetMatchingServices failed" 
    THEN DROP
-   ITERATOR @ IOIteratorNext ( svc *)
+   ITERATOR @ DUP IOIteratorNext ( iter svc *)
    ?DUP 0= ABORT" No driver found!"
-   RELEASE-ITERATOR ;
+   SWAP IOObjectRelease DROP ;
   
-\ This call will cause the user client to be instantiated. It returns 
-\ an io_connect_t handle that is used for all subsequent calls 
-\ to the user client.
+\ This call will cause the user client to be instantiated. 
+\ It returns an io_connect_t handle that is used for all 
+\ subsequent calls to the user client.
 
-: OPEN-USER-CLIENT ( svc -- handle )
+VARIABLE USER-CLIENT
+
+: OPEN-USER-CLIENT ( svc -- port )
    OUR-MACH-TASK 0 USER-CLIENT IOServiceOpen
    ABORT" Could not open user client" 
-   USER-CLIENT @ ;
+   USER-CLIENT @ DUP
+   \ connect to the driver
+   kS24UserClientOpen 0 0 0 0 IOConnectCallScalarMethod
+   ABORT" Could not connect to the driver" ;
    
-: CLOSE-USER-CLIENT ( -- )
-   USER-CLIENT @ IOServiceClose
-   ABORT" Could not close user client" 
-   0 USER-CLIENT ! ;
+: CLOSE-USER-CLIENT ( port -- )
+   DUP kS24UserClientClose 0 0 0 0 IOConnectCallScalarMethod
+   ABORT" Could not disconnect from the driver" ;
+   ( port *) IOServiceClose
+   ABORT" Could not close user client" ;
+
+2VARIABLE SCALAR0
+2VARIABLE SCALAR1
+  
+CREATE BUFFER 256 1024 * ALLOT
+
+: DRIVER-READ ( port size -- )
+   0 BUFFER SCALAR0 2!  \ scalarI_64[0] = (uint32_t)buffer;
+   0 SWAP SCALAR1 2!    \ scalarI_64[1] = size;
+   kS24ReadMethod SCALAR0 2 0 0 IOConnectCallScalarMethod
+   ABORT" Driver read failed" ;
    
-\\
+: DRIVER-WRITE ( port size -- )
+   0 BUFFER SCALAR0 2!  \ scalarI_64[0] = (uint32_t)buffer;
+   0 SWAP SCALAR1 2!    \ scalarI_64[1] = size;
+   kS24WriteMethod SCALAR0 2 0 0 IOConnectCallScalarMethod
+   ABORT" Driver write failed" ;
+   
+
+
     
