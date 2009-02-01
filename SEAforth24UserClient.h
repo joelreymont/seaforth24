@@ -46,5 +46,5 @@ protected:
     static IOReturn sRead(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);
     static IOReturn sWrite(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);    
 
-    virtual IOReturn S24IO(vm_address_t buffer, UInt32 size, IODirection direction);
+    virtual IOReturn S24IO(vm_address_t buffer, UInt32 size, UInt16 bits, IODirection direction);
   };

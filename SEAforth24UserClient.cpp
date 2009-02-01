@@ -53,14 +53,14 @@ const IOExternalMethodDispatch UserClientClassName::Methods[kNumberOfMethods] = 
 	},
 	{   // kS24ReadMethod
 		(IOExternalMethodAction) &UserClientClassName::sRead,	// Method pointer.
-		2,																		// One scalar input value.
+		3,																		// One scalar input value.
 		0,													// The size of the input struct.
 		0,																		// No scalar output values.
 		0																		// No struct output value.
 	},
 	{   // kS24WriteMethod
 		(IOExternalMethodAction) &UserClientClassName::sWrite,	// Method pointer.
-		2,																		// Two scalar input values.
+		3,																		// Two scalar input values.
 		0,																		// No struct input value.
 		0,																		// No scalar output values.
 		0													// The size of the output struct.
@@ -233,24 +233,24 @@ IOReturn UserClientClassName::closeUserClient(void)
 
 IOReturn UserClientClassName::sInit(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
 {
-    return target->S24IO(NULL, 0, kIODirectionNone);
+    return target->S24IO(NULL, 0, 0, kIODirectionNone);
 }
 
 IOReturn UserClientClassName::sRead(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
 {
-    return target->S24IO(arguments->scalarInput[0], arguments->scalarInput[1], kIODirectionIn);
+    return target->S24IO(arguments->scalarInput[0], arguments->scalarInput[1], arguments->scalarInput[2], kIODirectionIn);
 }
 
 IOReturn UserClientClassName::sWrite(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
 {
-    return target->S24IO(arguments->scalarInput[0], arguments->scalarInput[1], kIODirectionOut);
+    return target->S24IO(arguments->scalarInput[0], arguments->scalarInput[1], arguments->scalarInput[2], kIODirectionOut);
 }
 
-IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, IODirection direction)
+IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, UInt16 bits, IODirection direction)
 {
 	IOReturn result;
 
-	IOLog("%s[%p]::%s(%p, %d, %d)\n", getName(), this, __FUNCTION__, buffer, size, direction);
+	IOLog("%s[%p]::%s(%p, %d, %d, %d)\n", getName(), this, __FUNCTION__, buffer, size, bits, direction);
 
 	if (fProvider == NULL || isInactive()) 
 	{
@@ -285,9 +285,9 @@ IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, IODirectio
         else
         {
             if (direction == kIODirectionIn)
-		        result = fProvider->S24Read(buffer);
+		        result = fProvider->S24Read(buffer, bits);
 		    else
-                result = fProvider->S24Write(buffer);
+                result = fProvider->S24Write(buffer, bits);
                 
             buffer->release();
         }

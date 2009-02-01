@@ -38,25 +38,25 @@ bool com_wagerlabs_driver_SEAforth24::InitializeDeviceSupport(void)
     return result;
 }
 
-IOReturn com_wagerlabs_driver_SEAforth24::S24Read(IOMemoryDescriptor *buffer)
+IOReturn com_wagerlabs_driver_SEAforth24::S24Read(IOMemoryDescriptor *buffer, UInt16 bits)
 {
-    return S24SyncIO(kSCSIDataTransfer_FromTargetToInitiator, buffer);
+    return S24SyncIO(kSCSIDataTransfer_FromTargetToInitiator, buffer, bits);
 }
 
-IOReturn com_wagerlabs_driver_SEAforth24::S24Write(IOMemoryDescriptor *buffer)
+IOReturn com_wagerlabs_driver_SEAforth24::S24Write(IOMemoryDescriptor *buffer, UInt16 bits)
 {
-    return S24SyncIO(kSCSIDataTransfer_FromInitiatorToTarget, buffer);
+    return S24SyncIO(kSCSIDataTransfer_FromInitiatorToTarget, buffer, bits);
 }
 
 IOReturn com_wagerlabs_driver_SEAforth24::S24Init(void)
 {
-    return S24SyncIO(kSCSIDataTransfer_NoDataTransfer, NULL);
+    return S24SyncIO(kSCSIDataTransfer_NoDataTransfer, NULL, 0);
 }
  
-IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDescriptor *buffer)
+IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDescriptor *buffer, UInt16 bits)
 {
     IOReturn err = kIOReturnBadArgument;
-    UInt8 b1, b2;
+    UInt8 b1, b2, hi = bits >> 8, lo = bits & 0xff;
     UInt64 count = 0;
     SCSITaskIdentifier req = NULL;
     SCSITaskStatus taskStatus = kSCSITaskStatus_No_Status;
@@ -88,7 +88,7 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
             b2 = 0x00;
     }
     
-    SetCommandDescriptorBlock(req, 0x20, b1, b2, 0x00, 0x00, 0x00, 0x00, 0x00, /*0x90*/0x00, 0x00);
+    SetCommandDescriptorBlock(req, 0x20, b1, b2, 0x00, 0x00, 0x00, 0x00, hi, lo, 0x00);
     SetTimeoutDuration(req, 10000);
     SetDataTransferDirection(req, direction);
     

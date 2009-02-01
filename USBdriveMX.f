@@ -1,4 +1,4 @@
-FORTH
+HOST
 
 : CSTR ( -- n ) BL WORD COUNT TUCK 0 DO COUNT C, LOOP DROP 0 C, ;
 : ZSTR ( -- ) CSTR DROP ;
@@ -17,11 +17,11 @@ FUNCTION: IOServiceOpen ( svc port type handle-addr -- kr )
 FUNCTION: IOServiceClose ( handle -- kr )
 FUNCTION: IOServiceMatching ( cstr -- dict )
 FUNCTION: IOServiceGetMatchingServices ( port dict iter-addr -- kr )
-FUNCTION: IORegistryEntryGetParentEntry ( svc plane reg-entry-addr -- kr )
+\ FUNCTION: IORegistryEntryGetParentEntry ( svc plane reg-entry-addr -- kr )
 FUNCTION: IOIteratorNext ( iter -- obj ) 
 FUNCTION: IOObjectRelease ( iter -- kr )
-FUNCTION: IOObjectConformsTo ( obj cst -- bool )
-FUNCTION: IOObjectGetClass ( obj buf -- kr )
+\ FUNCTION: IOObjectConformsTo ( obj cst -- bool )
+\ FUNCTION: IOObjectGetClass ( obj buf -- kr )
 FUNCTION: IOConnectCallScalarMethod ( port u addr u addr u -- kr )
 
 \ Dispatch selectors
@@ -57,27 +57,28 @@ VARIABLE ITERATOR
 \ It returns an io_connect_t handle that is used for all 
 \ subsequent calls to the user client.
 
-VARIABLE USER-CLIENT
+VARIABLE PORT
 
-: OPEN-USER-CLIENT ( svc -- port )
-   OUR-MACH-TASK 0 USER-CLIENT IOServiceOpen
-   ABORT" Could not open user client" 
-   USER-CLIENT @ DUP
+: OPEN-PORT ( svc -- )
+   OUR-MACH-TASK 0 PORT IOServiceOpen
+   ABORT" Could not open driver port" 
    \ connect to the driver
-   kS24UserClientOpen 0 0 0 0 IOConnectCallScalarMethod
+   PORT @ kS24UserClientOpen 0 0 0 0 IOConnectCallScalarMethod
    ABORT" Could not connect to the driver" ;
   
-: CLOSE-USER-CLIENT ( port -- )
+: CLOSE-PORT ( port -- )
    DUP kS24UserClientClose 0 0 0 0 IOConnectCallScalarMethod
    ABORT" Could not disconnect from the driver"
    ( port *) IOServiceClose
-   ABORT" Could not close user client" ;
+   ABORT" Could not close driver port" ;
 
-CREATE SCALAR 16 ALLOT  
-CREATE BUFFER 256 1024 * ALLOT
-
+CREATE SCALAR 8 3 * ALLOT  
 SCALAR CONSTANT SCALAR0
-SCALAR 2 CELLS + CONSTANT SCALAR1
+SCALAR0 2 CELLS + CONSTANT SCALAR1
+SCALAR1 2 CELLS + CONSTANT SCALAR2
+
+CREATE BUFFER 256 1024 * ALLOT
+VARIABLE BUFSIZE
 
 : DRIVER-INIT ( port -- )
    kS24InitMethod 0 0 0 0 IOConnectCallScalarMethod
@@ -95,6 +96,43 @@ SCALAR 2 CELLS + CONSTANT SCALAR1
    kS24WriteMethod SCALAR0 2 0 0 IOConnectCallScalarMethod
    ABORT" Driver write failed" ;
    
+{ --------------------------------------------------------------------
+16>OnStream appends a 16-bit word to the stream in the data buffer.
+-------------------------------------------------------------------- }
+
+: 16>OnStream ( x -- )   
+   BUFFER BUFFIZE @ + W!
+   2 BUFSIZE +! ;
+
+{ --------------------------------------------------------------------
+SEAforth [x] buffer transfers
+
+/USBdrive initializes the drive (which must already be open!).
+[x]>USBdrive sends the [x] buffer to the drive.
+USBdrive>[x] reads from the drive, compiling into the [x] memory.
+-------------------------------------------------------------------- }
+
+HOST
+
+: /USBdrive ( -- )
+   DRIVER-INIT ;
+
+: [x]>USBdrive ( -- )
+   0 BUFSIZE !
+   0 18 BEGIN @16<18 16>OnStream OVER HERE = UNTIL
+   2 = IF -2 BUFSIZE +! THEN 18 * ( bits *)
+   PORT @ BUFSIZE @ ROT DRIVER-WRITE ;
+   
+: USBdrive>[x] ( addr u -- )
+   2DUP SCRUB  SWAP ORG
+   DUP 18 * DUP ( bits *)
+   14 + 16 / 2*  ( size *)
+   PORT @ SWAP ROT DRIVER-READ
+   BUFFER 16 ROT 0 DO
+      @18<16  TARGET ,  HOST
+   LOOP 2DROP ;
+
+ONLY FORTH DEFINITIONS
 
 
     
