@@ -28,7 +28,7 @@ FUNCTION: IOConnectCallScalarMethod ( port u addr u addr u -- kr )
 
 0  ENUM kS24UserClientOpen
    ENUM kS24UserClientClose
-   ENUM k24InitMethod
+   ENUM kS24InitMethod
    ENUM kS24ReadMethod
    ENUM kS24WriteMethod
    ENUM kNumberOfMethods
