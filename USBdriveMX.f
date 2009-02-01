@@ -65,10 +65,10 @@ VARIABLE USER-CLIENT
    \ connect to the driver
    kS24UserClientOpen 0 0 0 0 IOConnectCallScalarMethod
    ABORT" Could not connect to the driver" ;
-   
+  
 : CLOSE-USER-CLIENT ( port -- )
    DUP kS24UserClientClose 0 0 0 0 IOConnectCallScalarMethod
-   ABORT" Could not disconnect from the driver" ;
+   ABORT" Could not disconnect from the driver"
    ( port *) IOServiceClose
    ABORT" Could not close user client" ;
 
