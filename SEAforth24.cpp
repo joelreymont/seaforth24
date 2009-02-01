@@ -13,17 +13,17 @@ OSDefineMetaClassAndStructors(com_wagerlabs_driver_SEAforth24, IOSCSIPeripheralD
 
 bool com_wagerlabs_driver_SEAforth24::start(IOService *provider)
 {
-  bool  result = false;
-  
-  require ( super::start ( provider ), ErrorExit );
-  result = true;
- 
-  registerService();
+    bool  result = false;
+
+    require ( super::start ( provider ), ErrorExit );
+    result = true;
+
+    registerService();
   
 ErrorExit:
     
-  return result;
-  
+    return result;
+
 }
 
 bool com_wagerlabs_driver_SEAforth24::InitializeDeviceSupport(void)
@@ -87,22 +87,23 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
             b1 = 0xFA;
             b2 = 0x00;
     }
+    
     SetCommandDescriptorBlock(req, 0x20, b1, b2, 0x00, 0x00, 0x00, 0x00, 0x00, /*0x90*/0x00, 0x00);
     SetTimeoutDuration(req, 10000);
     SetDataTransferDirection(req, direction);
     
     if (buffer != NULL)
     {
-      SetDataBuffer(req, buffer);
-	    SetRequestedDataTransferCount(req, buffer->getLength());
-      buffer->prepare();
+        SetDataBuffer(req, buffer);
+        SetRequestedDataTransferCount(req, buffer->getLength());
+        buffer->prepare();
     }
 	
     serviceResponse = SendCommand(req, 10000);
   
     if (buffer != NULL)
     {
-      buffer->complete();
+        buffer->complete();
     }
   
     taskStatus = GetTaskStatus(req);
@@ -112,8 +113,8 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
 	    getName(), this, __FUNCTION__, serviceResponse, taskStatus, count);
 
 	if ((serviceResponse == kSCSIServiceResponse_TASK_COMPLETE) 
-	    && taskStatus == kSCSITaskStatus_GOOD)
-	    err = kIOReturnSuccess;
+        && taskStatus == kSCSITaskStatus_GOOD)
+        err = kIOReturnSuccess;
 	else
         err = kIOReturnError;
 

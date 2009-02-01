@@ -28,6 +28,7 @@ FUNCTION: IOConnectCallScalarMethod ( port u addr u addr u -- kr )
 
 0  ENUM kS24UserClientOpen
    ENUM kS24UserClientClose
+   ENUM k24InitMethod
    ENUM kS24ReadMethod
    ENUM kS24WriteMethod
    ENUM kNumberOfMethods
@@ -76,6 +77,10 @@ VARIABLE USER-CLIENT
 2VARIABLE SCALAR1
   
 CREATE BUFFER 256 1024 * ALLOT
+
+: DRIVER-INIT ( port -- )
+   kS24InitMethod 0 0 0 0 IOConnectCallScalarMethod
+   ABORT" Driver init failed" ;
 
 : DRIVER-READ ( port size -- )
    0 BUFFER SCALAR0 2!  \ scalarI_64[0] = (uint32_t)buffer;

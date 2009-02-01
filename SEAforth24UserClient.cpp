@@ -44,6 +44,13 @@ const IOExternalMethodDispatch UserClientClassName::Methods[kNumberOfMethods] = 
 		0,																		// No scalar output values.
 		0																		// No struct output value.
 	},
+	{   // kS24InitMethod
+		(IOExternalMethodAction) &UserClientClassName::sInit,	// Method pointer.
+		0,																		// One scalar input value.
+		0,													// The size of the input struct.
+		0,																		// No scalar output values.
+		0																		// No struct output value.
+	},
 	{   // kS24ReadMethod
 		(IOExternalMethodAction) &UserClientClassName::sRead,	// Method pointer.
 		2,																		// One scalar input value.
@@ -112,7 +119,8 @@ bool UserClientClassName::start(IOService* provider)
   
     success = (fProvider != NULL);
     
-    if (success) {
+    if (success) 
+    {
 		// It's important not to call super::start if some previous condition
 		// (like an invalid provider) would cause this function to return false. 
 		// I/O Kit won't call stop on an object if its start function returned false.
@@ -139,7 +147,8 @@ IOReturn UserClientClassName::clientClose(void)
 	// This should never happen in our case because this code path is only reached if the user process
 	// explicitly requests closing the connection to the user client.
 	bool success = terminate();
-	if (!success) {
+	if (!success) 
+	{
 		IOLog("%s[%p]::%s(): terminate() failed.\n", getName(), this, __FUNCTION__);
 	}
 
@@ -173,13 +182,15 @@ IOReturn UserClientClassName::openUserClient(void)
 	
 	IOLog("%s[%p]::%s()\n", getName(), this, __FUNCTION__);
     
-    if (fProvider == NULL || isInactive()) {
+    if (fProvider == NULL || isInactive()) 
+    {
 		// Return an error if we don't have a provider. This could happen if the user process
 		// called openUserClient without calling IOServiceOpen first. Or, the user client could be
 		// in the process of being terminated and is thus inactive.
         result = kIOReturnNotAttached;
 	}
-    else if (!fProvider->open(this)) {
+    else if (!fProvider->open(this)) 
+    {
 		// The most common reason this open call will fail is because the provider is already open
 		// and it doesn't support being opened by more than one client at a time.
 		result = kIOReturnExclusiveAccess;
@@ -199,22 +210,30 @@ IOReturn UserClientClassName::closeUserClient(void)
 	
 	IOLog("%s[%p]::%s()\n", getName(), this, __FUNCTION__);
             
-    if (fProvider == NULL) {
+    if (fProvider == NULL) 
+    {
 		// Return an error if we don't have a provider. This could happen if the user process
 		// called closeUserClient without calling IOServiceOpen first. 
 		result = kIOReturnNotAttached;
 		IOLog("%s[%p]::%s(): returning kIOReturnNotAttached.\n", getName(), this, __FUNCTION__);
 	}
-	else if (fProvider->isOpen(this)) {
+	else if (fProvider->isOpen(this)) 
+	{
 		// Make sure we're the one who opened our provider before we tell it to close.
 		fProvider->close(this);
 	}
-	else {
+	else 
+	{
 		result = kIOReturnNotOpen;
 		IOLog("%s[%p]::%s(): returning kIOReturnNotOpen.\n", getName(), this, __FUNCTION__);
 	}
 	
     return result;
+}
+
+IOReturn UserClientClassName::sInit(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
+{
+    return target->S24IO(NULL, 0, kIODirectionNone);
 }
 
 IOReturn UserClientClassName::sRead(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
@@ -245,6 +264,10 @@ IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, IODirectio
 		// Return an error if we do not have the driver open. This could happen if the user process
 		// did not call openUserClient before calling this function.
 		result = kIOReturnNotOpen;
+	}
+	else if (direction == kIODirectionNone)
+	{
+        fProvider->S24Init();
 	}
 	else 
 	{

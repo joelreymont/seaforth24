@@ -5,6 +5,7 @@
 enum {
     kS24UserClientOpen,
     kS24UserClientClose,
+    kS24InitMethod,
     kS24ReadMethod,
     kS24WriteMethod,
     kNumberOfMethods // Must be last 

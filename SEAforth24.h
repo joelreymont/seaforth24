@@ -8,6 +8,7 @@ class com_wagerlabs_driver_SEAforth24 : public IOSCSIPeripheralDeviceType00
 
 public:
 
+    IOReturn S24Init(void);
     IOReturn S24Read(IOMemoryDescriptor *buffer);
     IOReturn S24Write(IOMemoryDescriptor *buffer);
 
@@ -15,12 +16,11 @@ protected:
     
     bool start(IOService *provider);
     bool InitializeDeviceSupport (void);
-    IOReturn S24Init(void);
     IOReturn S24SyncIO(UInt8 direction, IOMemoryDescriptor *buffer);
     
     // Reserve space for future expansion.
     struct ExpansionData { };
-    ExpansionData*				reserved;
+    ExpansionData *reserved;
 
 private:
     

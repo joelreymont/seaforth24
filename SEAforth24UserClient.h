@@ -14,7 +14,7 @@ protected:
     
     static const IOExternalMethodDispatch Methods[kNumberOfMethods];
     
-  public:
+public:
 
     virtual void stop(IOService* provider);
     virtual bool start(IOService* provider);
@@ -30,7 +30,7 @@ protected:
     virtual bool terminate(IOOptionBits options = 0);
     virtual bool finalize(IOOptionBits options);
     
-  protected:	
+protected:	
     
     virtual IOReturn closeUserClient(void);
     virtual IOReturn openUserClient(void);
@@ -41,6 +41,8 @@ protected:
     
     static IOReturn sOpenUserClient(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);    
     static IOReturn sCloseUserClient(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);
+    static IOReturn sInit(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);
+
     static IOReturn sRead(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);
     static IOReturn sWrite(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);    
 
