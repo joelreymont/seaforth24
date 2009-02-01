@@ -91,15 +91,19 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
     SetTimeoutDuration(req, 10000);
     SetDataTransferDirection(req, direction);
     
-    if (direction != kSCSIDataTransfer_NoDataTransfer)
+    if (buffer != NULL)
     {
-        SetDataBuffer(req, buffer);
+      SetDataBuffer(req, buffer);
 	    SetRequestedDataTransferCount(req, buffer->getLength());
+      buffer->prepare();
     }
 	
-    buffer->prepare();
     serviceResponse = SendCommand(req, 10000);
-    buffer->complete();
+  
+    if (buffer != NULL)
+    {
+      buffer->complete();
+    }
   
     taskStatus = GetTaskStatus(req);
     count = GetRealizedDataTransferCount(req);
