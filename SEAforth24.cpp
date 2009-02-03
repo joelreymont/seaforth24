@@ -79,11 +79,11 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
 
     switch (direction)
     {
-        kSCSIDataTransfer_FromInitiatorToTarget:
+        case kSCSIDataTransfer_FromInitiatorToTarget:
             b1 = 0xFB;
             b2 = 0x00;
             break;
-        kSCSIDataTransfer_FromTargetToInitiator:
+        case kSCSIDataTransfer_FromTargetToInitiator:
             b1 = 0xFB;
             b2 = 0x01;
             break;
