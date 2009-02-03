@@ -48,14 +48,14 @@ CREATE DRIVER-CLASS-NAME ZSTR com_wagerlabs_driver_SEAforth24
 VARIABLE ITERATOR
 
 : LOOKUP-DRIVER ( -- svc )   
-   DRIVER-CLASS-NAME IOServiceMatching ( dictRef | 0 *)
+   DRIVER-CLASS-NAME IOServiceMatching ( dictRef | 0)
    ?DUP 0= ABORT" IOServiceMatching did not return a dictionary"
    \ consumes dictRef on success
    kIOMasterPortDefault OVER ITERATOR IOServiceGetMatchingServices
-   ( dictRef kr *) ?DUP IF 
+   ( dictRef kr) ?DUP IF 
       CFRelease ABORT" IOServiceGetMatchingServices failed" 
    THEN DROP
-   ITERATOR @ DUP IOIteratorNext ( iter svc *)
+   ITERATOR @ DUP IOIteratorNext ( iter svc)
    ?DUP 0= ABORT" No driver found!"
    SWAP IOObjectRelease DROP ;
   
@@ -75,7 +75,7 @@ VARIABLE DRIVER-PORT
 : CLOSE-DRIVER-PORT ( port -- )
    DUP kS24UserClientClose 0 0 0 0 IOConnectCallScalarMethod
    ABORT" Could not disconnect from the driver"
-   ( port *) IOServiceClose
+   ( port) IOServiceClose
    ABORT" Could not close driver port" ;
 
 CREATE SCALAR 8 3 * ALLOT  
@@ -134,13 +134,13 @@ HOST
 : [x]>USBdrive ( -- )
    0 SPT-DataTransferLength !
    0 18 BEGIN @16<18 16>OnStream OVER HERE = UNTIL
-   2 = IF -2 SPT-DataTransferLength +! THEN 18 * ( bits *)
+   2 = IF -2 SPT-DataTransferLength +! THEN 18 * ( bits)
    DRIVER-PORT @ SPT-DataTransferLength @ ROT DRIVER-WRITE ;
    
 : USBdrive>[x] ( addr u -- )
    2DUP SCRUB  SWAP ORG
-   DUP 18 * DUP ( bits *)
-   14 + 16 / 2*  ( size *)
+   DUP 18 * DUP ( bits)
+   14 + 16 / 2*  ( size)
    DRIVER-PORT @ SWAP ROT DRIVER-READ
    SPT-DBUF 16 ROT 0 DO
       @18<16  TARGET ,  HOST
