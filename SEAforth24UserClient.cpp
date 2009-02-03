@@ -53,7 +53,7 @@ const IOExternalMethodDispatch UserClientClassName::Methods[kNumberOfMethods] = 
 	},
 	{   // kS24ReadMethod
 		(IOExternalMethodAction) &UserClientClassName::sRead,	// Method pointer.
-		3,																		// One scalar input value.
+		2,																		// One scalar input value.
 		0,													// The size of the input struct.
 		0,																		// No scalar output values.
 		0																		// No struct output value.
@@ -267,7 +267,7 @@ IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, UInt16 bit
 	}
 	else if (direction == kIODirectionNone)
 	{
-        fProvider->S24Init();
+        result = fProvider->S24Init();
 	}
 	else 
 	{
