@@ -94,7 +94,7 @@ VARIABLE SPT-DataTransferLength
    0 SPT-DBUF SCALAR0 2!   \ scalarI_64[0] = (uint32_t)buffer;
    0 SWAP SCALAR1 2!       \ scalarI_64[1] = size;
    0 SWAP SCALAR2 2!       \ scalarI_64[2] = bits;    
-   kS24WriteMethod SCALAR0 2 0 0 IOConnectCallScalarMethod
+   kS24WriteMethod SCALAR0 3 0 0 IOConnectCallScalarMethod
    ABORT" Driver write failed" ;
    
 { --------------------------------------------------------------------
