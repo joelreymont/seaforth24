@@ -57,16 +57,16 @@ VARIABLE ITERATOR
 \ It returns an io_connect_t handle that is used for all 
 \ subsequent calls to the user client.
 
-VARIABLE PORT
+VARIABLE DRIVER-PORT
 
-: OPEN-PORT ( svc -- )
-   OUR-MACH-TASK 0 PORT IOServiceOpen
+: OPEN-DRIVER-PORT ( svc -- )
+   OUR-MACH-TASK 0 DRIVER-PORT IOServiceOpen
    ABORT" Could not open driver port" 
    \ connect to the driver
-   PORT @ kS24UserClientOpen 0 0 0 0 IOConnectCallScalarMethod
+   DRIVER-PORT @ kS24UserClientOpen 0 0 0 0 IOConnectCallScalarMethod
    ABORT" Could not connect to the driver" ;
   
-: CLOSE-PORT ( port -- )
+: CLOSE-DRIVER-PORT ( port -- )
    DUP kS24UserClientClose 0 0 0 0 IOConnectCallScalarMethod
    ABORT" Could not disconnect from the driver"
    ( port *) IOServiceClose
@@ -77,22 +77,23 @@ SCALAR CONSTANT SCALAR0
 SCALAR0 2 CELLS + CONSTANT SCALAR1
 SCALAR1 2 CELLS + CONSTANT SCALAR2
 
-CREATE BUFFER 256 1024 * ALLOT
-VARIABLE BUFSIZE
+CREATE SPT-DBUF 256 1024 * ALLOT
+VARIABLE SPT-DataTransferLength
 
 : DRIVER-INIT ( port -- )
    kS24InitMethod 0 0 0 0 IOConnectCallScalarMethod
    ABORT" Driver init failed" ;
 
-: DRIVER-READ ( port size -- )
-   0 BUFFER SCALAR0 2!  \ scalarI_64[0] = (uint32_t)buffer;
-   0 SWAP SCALAR1 2!    \ scalarI_64[1] = size;
+: DRIVER-READ ( port size bits -- )
+   0 SPT-DBUF SCALAR0 2!   \ scalarI_64[0] = (uint32_t)buffer;
+   0 SWAP SCALAR1 2!       \ scalarI_64[1] = size;
    kS24ReadMethod SCALAR0 2 0 0 IOConnectCallScalarMethod
    ABORT" Driver read failed" ;
    
-: DRIVER-WRITE ( port size -- )
-   0 BUFFER SCALAR0 2!  \ scalarI_64[0] = (uint32_t)buffer;
-   0 SWAP SCALAR1 2!    \ scalarI_64[1] = size;
+: DRIVER-WRITE ( port size bits -- )
+   0 SPT-DBUF SCALAR0 2!   \ scalarI_64[0] = (uint32_t)buffer;
+   0 SWAP SCALAR1 2!       \ scalarI_64[1] = size;
+   0 SWAP SCALAR2 2!       \ scalarI_64[2] = bits;    
    kS24WriteMethod SCALAR0 2 0 0 IOConnectCallScalarMethod
    ABORT" Driver write failed" ;
    
@@ -101,8 +102,8 @@ VARIABLE BUFSIZE
 -------------------------------------------------------------------- }
 
 : 16>OnStream ( x -- )   
-   BUFFER BUFFIZE @ + W!
-   2 BUFSIZE +! ;
+   SPT-DBUF SPT-DataTransferLength @ + W!
+   2 SPT-DataTransferLength +! ;
 
 { --------------------------------------------------------------------
 SEAforth [x] buffer transfers
@@ -114,21 +115,28 @@ USBdrive>[x] reads from the drive, compiling into the [x] memory.
 
 HOST
 
+: FIND-DRIVE ( -- )
+   LOOKUP-DRIVER
+   OPEN-DRIVER-PORT ;
+   
+: CLOSE-DRIVE ( -- )
+   DRIVER-PORT @ CLOSE-DRIVER-PORT ;
+   
 : /USBdrive ( -- )
-   DRIVER-INIT ;
+   DRIVER-PORT @ DRIVER-INIT ;
 
 : [x]>USBdrive ( -- )
-   0 BUFSIZE !
+   0 SPT-DataTransferLength !
    0 18 BEGIN @16<18 16>OnStream OVER HERE = UNTIL
-   2 = IF -2 BUFSIZE +! THEN 18 * ( bits *)
-   PORT @ BUFSIZE @ ROT DRIVER-WRITE ;
+   2 = IF -2 SPT-DataTransferLength +! THEN 18 * ( bits *)
+   DRIVER-PORT @ SPT-DataTransferLength @ ROT DRIVER-WRITE ;
    
 : USBdrive>[x] ( addr u -- )
    2DUP SCRUB  SWAP ORG
    DUP 18 * DUP ( bits *)
    14 + 16 / 2*  ( size *)
-   PORT @ SWAP ROT DRIVER-READ
-   BUFFER 16 ROT 0 DO
+   DRIVER-PORT @ SWAP ROT DRIVER-READ
+   SPT-DBUF 16 ROT 0 DO
       @18<16  TARGET ,  HOST
    LOOP 2DROP ;
 
