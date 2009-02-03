@@ -1,3 +1,9 @@
+\ (C) 2009 Wager Labs, SA
+\ Author: Joel Reymont
+\ Web: http://tinyco.de
+\ FORTHdrive interface
+\ end-user API compatibility with USBdriveSF.f
+
 HOST
 
 : CSTR ( -- n ) BL WORD COUNT TUCK 0 DO COUNT C, LOOP DROP 0 C, ;

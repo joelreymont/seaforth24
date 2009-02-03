@@ -1,3 +1,7 @@
+// (C) 2009 Wager Labs, SA
+// Author: Joel Reymont
+// Web: http://tinyco.de
+
 #include <IOKit/scsi/IOSCSIPeripheralDeviceType00.h>
 #include <IOKit/scsi/IOBlockStorageServices.h>
 #include "UserKernelShared.h"

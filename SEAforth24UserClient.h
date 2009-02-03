@@ -1,3 +1,7 @@
+// (C) 2009 Wager Labs, SA
+// Author: Joel Reymont
+// Web: http://tinyco.de
+
 #include <IOKit/IOUserClient.h>
 #include "SEAforth24.h"
 

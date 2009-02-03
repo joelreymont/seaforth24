@@ -1,3 +1,7 @@
+// (C) 2009 Wager Labs, SA
+// Author: Joel Reymont
+// Web: http://tinyco.de
+
 #include <IOKit/IOLib.h>
 #include <IOKit/IOKitKeys.h>
 #include <libkern/OSByteOrder.h>

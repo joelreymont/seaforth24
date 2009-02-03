@@ -1,3 +1,7 @@
+// (C) 2009 Wager Labs, SA
+// Author: Joel Reymont
+// Web: http://tinyco.de
+
 #include <AvailabilityMacros.h>
 #include <IOKit/IOKitLib.h>
 #include "SEAforth24Interface.h"
