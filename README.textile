@@ -24,12 +24,10 @@ h1. What not
 
 * I haven't bothered with the sense buffer. Is it really needed? The Forth code does not seem to make use of it.
 
-* Proper data is fed to the driver but something else is passed down to the FORTHdrive. I'm trying to figure out why. 
-
-* I haven't dealt with reading data from the thumb stick yet. The Forth code in USBdrive>[x] is likely wrong, same for the driver code in SEAforth24.cpp.
-
-* The driver is lacking polish :-).
+* I haven't dealt with reading data from the drive yet. The Forth code in USBdrive>[x] is likely wrong.
 
 h1. Finally
+
+The blinktest example works!
 
 Use 'sudo kextunload -b com.wagerlabs.driver.SEAforth24' to force unloading of the driver, or simply take the FORTHdrive out and wait 1-2 minutes for the driver to unload automatically.
