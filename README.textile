@@ -1,8 +1,10 @@
-h1. This is the Mac OSX (x86-32) driver for the "IntellaSys FORTHdrive": 	 http://www.intellasys.net/index.php?option=com_content&task=view&id=62&Itemid=77 thumb stick evaluation board. The FORTHdrive houses a SEAforth24 CPU (24-core) as well as a 1GiB flash disk with the VentureForth development kit.
+h1. What
+
+This is the Mac OSX (x86-32) driver for the "IntellaSys FORTHdrive": 	 http://www.intellasys.net/index.php?option=com_content&task=view&id=62&Itemid=77 thumb stick evaluation board. The FORTHdrive houses a SEAforth24 CPU (24-core) as well as a 1GiB flash disk with the VentureForth development kit.
 
 The Forth side of the driver is also included (USBdriveMX.f), although it will hardly be of use to anyone but me until SwiftForth:http://www.forth.com for Mac OSX is finally released.
 
-h1. Usage
+h1. How
 
 * Build the driver, e.g. xcodebuild -configuration Debug
 
@@ -18,6 +20,6 @@ h1. Usage
 
 * Use USBdriveMX.f as a template for your gforth or other Forth implementation
 
-h1. Problems
+h1. What not
 
 Proper data is fed to the driver but something else is passed down to the FORTHdrive. I'm trying to figure out why. Also, the driver is lacking polish :-).
