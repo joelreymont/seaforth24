@@ -275,25 +275,25 @@ IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, UInt16 bit
 	}
 	else 
 	{
-        IOMemoryDescriptor *buffer = IOMemoryDescriptor::withAddress(
+        IOMemoryDescriptor *iomd = IOMemoryDescriptor::withAddress(
             (vm_address_t)buffer, 
 			size, 
 			direction,
 			fTask 
 		);
 
-        if (buffer == NULL)
+        if (iomd == NULL)
         {
             result = kIOReturnError;
         }
         else
         {
             if (direction == kIODirectionIn)
-		        result = fProvider->S24Read(buffer, bits);
+		        result = fProvider->S24Read(iomd, bits);
 		    else
-                result = fProvider->S24Write(buffer, bits);
+                result = fProvider->S24Write(iomd, bits);
                 
-            buffer->release();
+            iomd->release();
         }
 	}
 	
