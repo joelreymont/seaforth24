@@ -21,7 +21,7 @@ protected:
     
     bool start(IOService *provider);
     bool InitializeDeviceSupport (void);
-    IOReturn S24SyncIO(UInt8 kind, IOMemoryDescriptor *buffer, UInt16 bits);
+    IOReturn S24SyncIO(S24Kind kind, IOMemoryDescriptor *buffer, UInt16 bits);
     
     // Reserve space for future expansion.
     struct ExpansionData { };

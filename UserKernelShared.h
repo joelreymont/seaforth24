@@ -16,7 +16,7 @@ enum
     kNumberOfMethods // Must be last 
 };
 
-enum
+enum S24Kind
 {
     kS24Init,
     kS24Read,

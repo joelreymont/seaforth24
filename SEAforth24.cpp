@@ -62,7 +62,7 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24Init(void)
     return S24SyncIO(kS24Init, NULL, 0);
 }
  
-IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 kind, IOMemoryDescriptor *buffer, UInt16 bits)
+IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(S24Kind kind, IOMemoryDescriptor *buffer, UInt16 bits)
 {
     IOReturn err = kIOReturnBadArgument;
     UInt8 direction, b1, b2, hi = bits >> 8, lo = bits & 0xff;
@@ -73,7 +73,7 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 kind, IOMemoryDescript
     
     DEBUG_LOG("%s[%p]::%s(%d, %p)\n", getName(), this, __FUNCTION__, direction, buffer);
 
-    if (direction != kSCSIDataTransfer_NoDataTransfer)
+    if (kind != kS24Init)
     {
         require(buffer != NULL, ErrorExit);
     }
@@ -82,7 +82,7 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 kind, IOMemoryDescript
     
     require(req != NULL, ErrorExit);
 
-    switch (direction)
+    switch (kind)
     {
         case kS24Write:
             direction = kSCSIDataTransfer_FromInitiatorToTarget;
