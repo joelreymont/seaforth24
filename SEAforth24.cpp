@@ -97,8 +97,10 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
     SetDataTransferDirection(req, direction);
     
     if (buffer != NULL)
-    {
+    {   
         buffer->prepare();
+        char data[64];
+        int n = buffer->readBytes(0, data, 16);
         SetDataBuffer(req, buffer);
         SetRequestedDataTransferCount(req, buffer->getLength());
     }

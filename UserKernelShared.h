@@ -6,7 +6,8 @@
 #define kDriverClassName  "com_wagerlabs_driver_SEAforth24"
 
 // User client method dispatch selectors.
-enum {
+enum 
+{
     kS24UserClientOpen,
     kS24UserClientClose,
     kS24InitMethod,

@@ -33,41 +33,42 @@ OSDefineMetaClassAndStructors(com_wagerlabs_driver_SEAforth24UserClient, IOUserC
 // client to perform error checking on the parameters before 
 // passing them to the driver. 
 
-const IOExternalMethodDispatch UserClientClassName::Methods[kNumberOfMethods] = {
+const IOExternalMethodDispatch UserClientClassName::Methods[kNumberOfMethods] = 
+{
 	{   // kS24ClientOpen
-		(IOExternalMethodAction) &UserClientClassName::sOpenUserClient,	// Method pointer.
-		0,																		// No scalar input values.
-		0,																		// No struct input value.
-		0,																		// No scalar output values.
-		0																		// No struct output value.
+		(IOExternalMethodAction) &UserClientClassName::sOpenUserClient,
+		0,														
+		0,														
+		0,														
+		0														
 	},
 	{   // kS24ClientClose
-		(IOExternalMethodAction) &UserClientClassName::sCloseUserClient,	// Method pointer.
-		0,																		// No scalar input values.
-		0,																		// No struct input value.
-		0,																		// No scalar output values.
-		0																		// No struct output value.
+		(IOExternalMethodAction) &UserClientClassName::sCloseUserClient,
+		0,																
+		0,																
+		0,																
+		0																
 	},
 	{   // kS24InitMethod
-		(IOExternalMethodAction) &UserClientClassName::sInit,	// Method pointer.
-		0,																		// One scalar input value.
-		0,													// The size of the input struct.
-		0,																		// No scalar output values.
-		0																		// No struct output value.
+		(IOExternalMethodAction) &UserClientClassName::sInit,
+		0,													
+		0,													
+		0,													
+		0													
 	},
 	{   // kS24ReadMethod
-		(IOExternalMethodAction) &UserClientClassName::sRead,	// Method pointer.
-		2,																		// One scalar input value.
-		0,													// The size of the input struct.
-		0,																		// No scalar output values.
-		0																		// No struct output value.
+		(IOExternalMethodAction) &UserClientClassName::sRead,
+		2,													
+		0,													
+		0,													
+		0													
 	},
 	{   // kS24WriteMethod
-		(IOExternalMethodAction) &UserClientClassName::sWrite,	// Method pointer.
-		3,																		// Two scalar input values.
-		0,																		// No struct input value.
-		0,																		// No scalar output values.
-		0													// The size of the output struct.
+		(IOExternalMethodAction) &UserClientClassName::sWrite,
+		3,													
+		0,													
+		0,													
+		0													
 	}
 };
 
@@ -89,11 +90,8 @@ IOReturn UserClientClassName::externalMethod(uint32_t selector, IOExternalMethod
 	return super::externalMethod(selector, arguments, dispatch, target, reference);
 }
 
-// There are two forms of IOUserClient::initWithTask, the second of which accepts an additional OSDictionary* parameter.
-// If your user client needs to modify its behavior when it's being used by a process running using Rosetta,
-// you need to implement the form of initWithTask with this additional parameter.
-//
 // initWithTask is called as a result of the user process calling IOServiceOpen.
+
 bool UserClientClassName::initWithTask(task_t owningTask, void* securityToken, UInt32 type)
 {
     bool	success;
@@ -110,14 +108,15 @@ bool UserClientClassName::initWithTask(task_t owningTask, void* securityToken, U
 }
 
 // start is called after initWithTask as a result of the user process calling IOServiceOpen.
+
 bool UserClientClassName::start(IOService* provider)
 {
     bool	success;
 	
 	IOLog("%s[%p]::%s(%p)\n", getName(), this, __FUNCTION__, provider);
     
-    // Verify that this user client is being started with a provider that it knows
-	// how to communicate with.
+    // Verify that this user client is being started with a provider 
+    // that it knows how to communicate with.
 	
 	fProvider = OSDynamicCast(DriverClassName, provider);
   
@@ -182,7 +181,7 @@ IOReturn UserClientClassName::sOpenUserClient(UserClientClassName* target, void*
 
 IOReturn UserClientClassName::openUserClient(void)
 {
-    IOReturn	result = kIOReturnSuccess;
+    IOReturn result = kIOReturnSuccess;
 	
 	IOLog("%s[%p]::%s()\n", getName(), this, __FUNCTION__);
     
@@ -210,7 +209,7 @@ IOReturn UserClientClassName::sCloseUserClient(UserClientClassName* target, void
 
 IOReturn UserClientClassName::closeUserClient(void)
 {
-    IOReturn	result = kIOReturnSuccess;
+    IOReturn result = kIOReturnSuccess;
 	
 	IOLog("%s[%p]::%s()\n", getName(), this, __FUNCTION__);
             
@@ -242,12 +241,22 @@ IOReturn UserClientClassName::sInit(UserClientClassName* target, void* reference
 
 IOReturn UserClientClassName::sRead(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
 {
-    return target->S24IO(arguments->scalarInput[0], arguments->scalarInput[1], arguments->scalarInput[2], kIODirectionIn);
+    return target->S24IO(
+        arguments->scalarInput[0], 
+        arguments->scalarInput[1], 
+        arguments->scalarInput[2], 
+        kIODirectionIn
+        );
 }
 
 IOReturn UserClientClassName::sWrite(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
 {
-    return target->S24IO(arguments->scalarInput[0], arguments->scalarInput[1], arguments->scalarInput[2], kIODirectionOut);
+    return target->S24IO(
+        arguments->scalarInput[0], 
+        arguments->scalarInput[1],
+        arguments->scalarInput[2], 
+        kIODirectionOut
+        );
 }
 
 IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, UInt16 bits, IODirection direction)

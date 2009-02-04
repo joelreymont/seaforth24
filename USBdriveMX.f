@@ -23,11 +23,8 @@ FUNCTION: IOServiceOpen ( svc port type handle-addr -- kr )
 FUNCTION: IOServiceClose ( handle -- kr )
 FUNCTION: IOServiceMatching ( cstr -- dict )
 FUNCTION: IOServiceGetMatchingServices ( port dict iter-addr -- kr )
-\ FUNCTION: IORegistryEntryGetParentEntry ( svc plane reg-entry-addr -- kr )
 FUNCTION: IOIteratorNext ( iter -- obj ) 
 FUNCTION: IOObjectRelease ( iter -- kr )
-\ FUNCTION: IOObjectConformsTo ( obj cst -- bool )
-\ FUNCTION: IOObjectGetClass ( obj buf -- kr )
 FUNCTION: IOConnectCallScalarMethod ( port u addr u addr u -- kr )
 
 \ Dispatch selectors
