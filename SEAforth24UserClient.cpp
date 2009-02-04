@@ -58,7 +58,7 @@ const IOExternalMethodDispatch UserClientClassName::Methods[kNumberOfMethods] =
 	},
 	{   // kS24ReadMethod
 		(IOExternalMethodAction) &UserClientClassName::sRead,
-		2,													
+		3,													
 		0,													
 		0,													
 		0													
