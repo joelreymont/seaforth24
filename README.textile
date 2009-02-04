@@ -22,6 +22,8 @@ h1. How
 
 h1. What not
 
+* I haven't bothered with the sense buffer. Is it really needed? The Forth code does not seem to make use of it.
+
 * Proper data is fed to the driver but something else is passed down to the FORTHdrive. I'm trying to figure out why. 
 
 * I haven't dealt with reading data from the thumb stick yet. The Forth code in USBdrive>[x] is likely wrong, same for the driver code in SEAforth24.cpp.
