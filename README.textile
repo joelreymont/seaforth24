@@ -22,12 +22,10 @@ h1. How
 
 h1. What not
 
-* I haven't bothered with the sense buffer. Is it really needed? The Forth code does not seem to make use of it.
-
-* I haven't dealt with reading data from the drive yet. The Forth code in USBdrive>[x] is likely wrong.
+* I haven't bothered with the sense buffer. Is it really needed? My Forth code does not make use of it.
 
 h1. Finally
 
-The blinktest example works!
+The blinktest example works. readflash returns all 0s, not sure if that's correct.
 
 Use 'sudo kextunload -b com.wagerlabs.driver.SEAforth24' to force unloading of the driver, or simply take the FORTHdrive out and wait 1-2 minutes for the driver to unload automatically.
