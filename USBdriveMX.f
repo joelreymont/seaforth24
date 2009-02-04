@@ -75,13 +75,18 @@ VARIABLE DRIVER-PORT
    ( port) IOServiceClose
    ABORT" Could not close driver port" ;
 
-CREATE SCALAR 8 3 * ALLOT  
+CREATE SCALAR 8 4 * ALLOT  
 SCALAR CONSTANT SCALAR0
 SCALAR0 2 CELLS + CONSTANT SCALAR1
 SCALAR1 2 CELLS + CONSTANT SCALAR2
+SCALAR2 2 CELLS + CONSTANT SCALAR3
 
 CREATE SPT-DBUF 256 1024 * ALLOT
 VARIABLE SPT-DataTransferLength
+0 VALUE WRITE-LAST
+
+: setWrite 0 to WRITE-LAST ;
+: thenRead 1 to WRITE-LAST ;
 
 : DRIVER-INIT ( port -- )
    kS24InitMethod 0 0 0 0 IOConnectCallScalarMethod
@@ -97,6 +102,7 @@ VARIABLE SPT-DataTransferLength
    0 SPT-DBUF SCALAR0 2!   \ scalarI_64[0] = (uint32_t)buffer;
    0 SWAP SCALAR2 2!       \ scalarI_64[2] = bits;    
    0 SWAP SCALAR1 2!       \ scalarI_64[1] = size;
+   0 WRITE-LAST SCALAR3 2! \ scalarI_64[3] = write-last;
    kS24WriteMethod SCALAR0 3 0 0 IOConnectCallScalarMethod
    ABORT" Driver write failed" ;
    

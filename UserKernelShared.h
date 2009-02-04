@@ -16,3 +16,10 @@ enum
     kNumberOfMethods // Must be last 
 };
 
+enum
+{
+    kS24Init,
+    kS24Read,
+    kS24Write,
+    kS24WriteLast
+};

@@ -15,12 +15,13 @@ public:
     IOReturn S24Init(void);
     IOReturn S24Read(IOMemoryDescriptor *buffer, UInt16 bits);
     IOReturn S24Write(IOMemoryDescriptor *buffer, UInt16 bits);
-
+    IOReturn S24WriteLast(IOMemoryDescriptor *buffer, UInt16 bits);
+    
 protected:
     
     bool start(IOService *provider);
     bool InitializeDeviceSupport (void);
-    IOReturn S24SyncIO(UInt8 direction, IOMemoryDescriptor *buffer, UInt16 bits);
+    IOReturn S24SyncIO(UInt8 kind, IOMemoryDescriptor *buffer, UInt16 bits);
     
     // Reserve space for future expansion.
     struct ExpansionData { };

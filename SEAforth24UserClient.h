@@ -40,15 +40,49 @@ protected:
     virtual IOReturn openUserClient(void);
     
     // KPI for supporting access from both 32-bit and 64-bit user processes beginning with Mac OS X 10.5.
-    virtual IOReturn externalMethod(uint32_t selector, IOExternalMethodArguments* arguments,
-                                    IOExternalMethodDispatch* dispatch, OSObject* target, void* reference);
+    virtual IOReturn externalMethod(
+        uint32_t selector, 
+        IOExternalMethodArguments* arguments,
+        IOExternalMethodDispatch* dispatch, 
+        OSObject* target, 
+        void* reference
+    );
     
-    static IOReturn sOpenUserClient(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);    
-    static IOReturn sCloseUserClient(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);
-    static IOReturn sInit(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);
+    static IOReturn sOpenUserClient(
+        UserClientClassName* target, 
+        void* reference, 
+        IOExternalMethodArguments* arguments
+    );    
+    
+    static IOReturn sCloseUserClient(
+        UserClientClassName* target, 
+        void* reference, 
+        IOExternalMethodArguments* arguments
+    );
+    
+    static IOReturn sInit(
+        UserClientClassName* target, 
+        void* reference, 
+        IOExternalMethodArguments* arguments
+    );
 
-    static IOReturn sRead(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);
-    static IOReturn sWrite(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments);    
+    static IOReturn sRead(
+        UserClientClassName* target, 
+        void* reference, 
+        IOExternalMethodArguments* arguments
+    );
+    
+    static IOReturn sWrite(
+        UserClientClassName* target,
+        void* reference, 
+        IOExternalMethodArguments* arguments
+    );    
 
-    virtual IOReturn S24IO(vm_address_t buffer, UInt32 size, UInt16 bits, IODirection direction);
+    virtual IOReturn S24IO(
+        vm_address_t buffer, 
+        UInt32 size, 
+        UInt16 bits, 
+        UInt8 write_last,
+        IODirection direction
+    );
   };

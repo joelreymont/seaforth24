@@ -65,7 +65,7 @@ const IOExternalMethodDispatch UserClientClassName::Methods[kNumberOfMethods] =
 	},
 	{   // kS24WriteMethod
 		(IOExternalMethodAction) &UserClientClassName::sWrite,
-		3,													
+		4,													
 		0,													
 		0,													
 		0													
@@ -94,9 +94,7 @@ IOReturn UserClientClassName::externalMethod(uint32_t selector, IOExternalMethod
 
 bool UserClientClassName::initWithTask(task_t owningTask, void* securityToken, UInt32 type)
 {
-    bool	success;
-    
-	success = super::initWithTask(owningTask, securityToken, type);	    
+    bool success = super::initWithTask(owningTask, securityToken, type);	    
 	
 	// This IOLog must follow super::initWithTask because getName relies on the superclass initialization.
 	IOLog("%s[%p]::%s(%p, %p, %ld)\n", getName(), this, __FUNCTION__, owningTask, securityToken, type);
@@ -111,7 +109,7 @@ bool UserClientClassName::initWithTask(task_t owningTask, void* securityToken, U
 
 bool UserClientClassName::start(IOService* provider)
 {
-    bool	success;
+    bool success;
 	
 	IOLog("%s[%p]::%s(%p)\n", getName(), this, __FUNCTION__, provider);
     
@@ -236,7 +234,7 @@ IOReturn UserClientClassName::closeUserClient(void)
 
 IOReturn UserClientClassName::sInit(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
 {
-    return target->S24IO(NULL, 0, 0, kIODirectionNone);
+    return target->S24IO(NULL, 0, 0, 0, kIODirectionNone);
 }
 
 IOReturn UserClientClassName::sRead(UserClientClassName* target, void* reference, IOExternalMethodArguments* arguments)
@@ -244,7 +242,8 @@ IOReturn UserClientClassName::sRead(UserClientClassName* target, void* reference
     return target->S24IO(
         arguments->scalarInput[0], 
         arguments->scalarInput[1], 
-        arguments->scalarInput[2], 
+        arguments->scalarInput[2],
+        0, 
         kIODirectionIn
         );
 }
@@ -255,11 +254,12 @@ IOReturn UserClientClassName::sWrite(UserClientClassName* target, void* referenc
         arguments->scalarInput[0], 
         arguments->scalarInput[1],
         arguments->scalarInput[2], 
+        arguments->scalarInput[3], 
         kIODirectionOut
         );
 }
 
-IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, UInt16 bits, IODirection direction)
+IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, UInt16 bits, UInt8 write_last, IODirection direction)
 {
 	IOReturn result;
 
@@ -278,7 +278,8 @@ IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, UInt16 bit
 		// did not call openUserClient before calling this function.
 		result = kIOReturnNotOpen;
 	}
-	else if (direction == kIODirectionNone)
+	// We do not support In/Out
+	else if (direction == kIODirectionNone || direction == kIODirectionInOut)
 	{
         result = fProvider->S24Init();
 	}
@@ -299,8 +300,10 @@ IOReturn UserClientClassName::S24IO(vm_address_t buffer, UInt32 size, UInt16 bit
         {
             if (direction == kIODirectionIn)
 		        result = fProvider->S24Read(iomd, bits);
-		    else
+		    else if (direction == kIODirectionOut && write_last == 0)
                 result = fProvider->S24Write(iomd, bits);
+            else
+                result = fProvider->S24WriteLast(iomd, bits);
                 
             iomd->release();
         }

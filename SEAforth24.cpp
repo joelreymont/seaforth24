@@ -44,23 +44,28 @@ bool com_wagerlabs_driver_SEAforth24::InitializeDeviceSupport(void)
 
 IOReturn com_wagerlabs_driver_SEAforth24::S24Read(IOMemoryDescriptor *buffer, UInt16 bits)
 {
-    return S24SyncIO(kSCSIDataTransfer_FromTargetToInitiator, buffer, bits);
+    return S24SyncIO(kS24Read, buffer, bits);
 }
 
 IOReturn com_wagerlabs_driver_SEAforth24::S24Write(IOMemoryDescriptor *buffer, UInt16 bits)
 {
-    return S24SyncIO(kSCSIDataTransfer_FromInitiatorToTarget, buffer, bits);
+    return S24SyncIO(kS24Write, buffer, bits);
+}
+
+IOReturn com_wagerlabs_driver_SEAforth24::S24WriteLast(IOMemoryDescriptor *buffer, UInt16 bits)
+{
+    return S24SyncIO(kS24WriteLast, buffer, bits);
 }
 
 IOReturn com_wagerlabs_driver_SEAforth24::S24Init(void)
 {
-    return S24SyncIO(kSCSIDataTransfer_NoDataTransfer, NULL, 0);
+    return S24SyncIO(kS24Init, NULL, 0);
 }
  
-IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDescriptor *buffer, UInt16 bits)
+IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 kind, IOMemoryDescriptor *buffer, UInt16 bits)
 {
     IOReturn err = kIOReturnBadArgument;
-    UInt8 b1, b2, hi = bits >> 8, lo = bits & 0xff;
+    UInt8 direction, b1, b2, hi = bits >> 8, lo = bits & 0xff;
     UInt64 count = 0;
     SCSITaskIdentifier req = NULL;
     SCSITaskStatus taskStatus = kSCSITaskStatus_No_Status;
@@ -79,15 +84,23 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
 
     switch (direction)
     {
-        case kSCSIDataTransfer_FromInitiatorToTarget:
+        case kS24Write:
+            direction = kSCSIDataTransfer_FromInitiatorToTarget;
             b1 = 0xFB;
             b2 = 0x00;
             break;
-        case kSCSIDataTransfer_FromTargetToInitiator:
+        case kS24WriteLast:
+            direction = kSCSIDataTransfer_FromInitiatorToTarget;
+            b1 = 0xFB;
+            b2 = 0x02;
+            break;
+        case kS24Read:
+            direction = kSCSIDataTransfer_FromTargetToInitiator;
             b1 = 0xFB;
             b2 = 0x01;
             break;
-        default:
+        default: // kS24Init
+            direction = kSCSIDataTransfer_NoDataTransfer;
             b1 = 0xFA;
             b2 = 0x00;
     }
@@ -99,8 +112,6 @@ IOReturn com_wagerlabs_driver_SEAforth24::S24SyncIO(UInt8 direction, IOMemoryDes
     if (buffer != NULL)
     {   
         buffer->prepare();
-        char data[64];
-        int n = buffer->readBytes(0, data, 16);
         SetDataBuffer(req, buffer);
         SetRequestedDataTransferCount(req, buffer->getLength());
     }

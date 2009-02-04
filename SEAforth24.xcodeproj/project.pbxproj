@@ -28,8 +28,6 @@
 		4CCABAC20F325CF500E6A0D8 /* SEAforth24UserClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CCABABF0F325CF500E6A0D8 /* SEAforth24UserClient.h */; };
 		4CCABAC30F325CF500E6A0D8 /* UserKernelShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CCABAC00F325CF500E6A0D8 /* UserKernelShared.h */; };
 		4CD4297A0F330D5500E467AD /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CCABA4D0F32554900E6A0D8 /* IOKit.framework */; };
-		4CD4298D0F330E1800E467AD /* SEAforth24Interface.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CD4298C0F330E1800E467AD /* SEAforth24Interface.h */; };
-		4CD4298F0F330E7800E467AD /* SEAforth24Interface.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CD4298E0F330E7800E467AD /* SEAforth24Interface.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,8 +65,6 @@
 		4CCABABF0F325CF500E6A0D8 /* SEAforth24UserClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAforth24UserClient.h; sourceTree = "<group>"; };
 		4CCABAC00F325CF500E6A0D8 /* UserKernelShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserKernelShared.h; sourceTree = "<group>"; };
 		4CD428C60F330CB000E467AD /* libSEAForth24.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libSEAForth24.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		4CD4298C0F330E1800E467AD /* SEAforth24Interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAforth24Interface.h; sourceTree = "<group>"; };
-		4CD4298E0F330E7800E467AD /* SEAforth24Interface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SEAforth24Interface.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +90,6 @@
 			isa = PBXGroup;
 			children = (
 				247142CAFF3F8F9811CA285C /* Driver */,
-				4CD4297B0F330D7800E467AD /* Client Library */,
 				4C7B7C800F3244EE0004B6CC /* Frameworks */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
@@ -140,15 +135,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4CD4297B0F330D7800E467AD /* Client Library */ = {
-			isa = PBXGroup;
-			children = (
-				4CD4298C0F330E1800E467AD /* SEAforth24Interface.h */,
-				4CD4298E0F330E7800E467AD /* SEAforth24Interface.c */,
-			);
-			name = "Client Library";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -166,7 +152,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CD4298D0F330E1800E467AD /* SEAforth24Interface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +249,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CD4298F0F330E7800E467AD /* SEAforth24Interface.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
